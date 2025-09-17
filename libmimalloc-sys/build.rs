@@ -15,6 +15,7 @@ fn main() {
 
     let target_os = env::var("CARGO_CFG_TARGET_OS").expect("target_os not defined!");
     let target_family = env::var("CARGO_CFG_TARGET_FAMILY").expect("target_family not defined!");
+    let target_vendor = env::var("CARGO_CFG_TARGET_VENDOR").expect("target_vendor not defined!");
     let target_arch = env::var("CARGO_CFG_TARGET_ARCH").expect("target_arch not defined!");
 
     if target_family != "windows" {
@@ -26,6 +27,10 @@ fn main() {
         // only ever build a static lib.
         if target_family != "windows" {
             build.define("MI_MALLOC_OVERRIDE", None);
+        }
+        if target_vendor == "apple" {
+            build.define("MI_OSX_ZONE", Some("1"));
+            build.define("MI_OSX_INTERPOSE", Some("1"));
         }
     }
 

@@ -89,4 +89,11 @@ mod tests {
         let ptr = unsafe { mi_realloc_aligned(ptr as *mut c_void, 8, 8) } as *mut u8;
         unsafe { mi_free(ptr as *mut c_void) };
     }
+
+    #[cfg(all(feature = "override", target_vendor = "apple"))]
+    #[test]
+    fn mimalloc_and_libc_are_interoperable_when_overridden() {
+        let ptr = unsafe { mi_malloc(42) };
+        unsafe { libc::free(ptr) };
+    }
 }

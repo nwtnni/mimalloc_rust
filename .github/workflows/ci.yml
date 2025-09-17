@@ -50,7 +50,7 @@ jobs:
 
       - name: Test libmimalloc-sys crate bindings (no secure)
         run: cargo run -p libmimalloc-sys-test
-        
+
       - name: Build (extended)
         run: cargo build --features extended
 
@@ -86,6 +86,10 @@ jobs:
 
       - name: Test libmimalloc-sys crate bindings (v3, extended)
         run: cargo run --features libmimalloc-sys-test/v3,libmimalloc-sys-test/extended -p libmimalloc-sys-test
+
+      - name: Test override dylib
+        if: ${{ !contains(matrix.os, 'windows') }}
+        run: cargo run -ptest-override-with-dylib --features override
 
   lint:
     name: Rustfmt / Clippy
