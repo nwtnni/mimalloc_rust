@@ -23,15 +23,7 @@ fn main() {
     }
 
     if env::var_os("CARGO_FEATURE_OVERRIDE").is_some() {
-        // Overriding malloc is only available on windows in shared mode, but we
-        // only ever build a static lib.
-        if target_family != "windows" {
-            build.define("MI_MALLOC_OVERRIDE", None);
-        }
-        if target_vendor == "apple" {
-            build.define("MI_OSX_ZONE", Some("1"));
-            build.define("MI_OSX_INTERPOSE", Some("1"));
-        }
+        build.define("MI_MALLOC_OVERRIDE", Some("1"));
     }
 
     if env::var_os("CARGO_FEATURE_SECURE").is_some() {
